@@ -10,22 +10,24 @@ namespace webapi.event_.codeFirst.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Produces("application/json")]
-    public class TiposEventoController : ControllerBase
+    public class ComentarioEventoController : ControllerBase
     {
-        private ITiposEventoRepository _tiposEventoRepository;
+        private readonly IComentarioEventoRepository _comentarioEventoRepository;
 
-        public TiposEventoController()
+        public ComentarioEventoController()
         {
-            _tiposEventoRepository = new TiposEventoRepository();
+            _comentarioEventoRepository = new ComentarioEventoRepository();
         }
 
         [HttpPost]
-        [Authorize(Roles = "Administrador")]
-        public IActionResult Post(TiposEvento tipoEvento)
+        [Authorize(Roles = "Aluno")]
+        public IActionResult Post(ComentariosEvento novoComentario)
         {
+
+
             try
             {
-                _tiposEventoRepository.Cadastrar(tipoEvento);
+                _comentarioEventoRepository.Cadastrar(novoComentario);
 
                 return StatusCode(201);
             }
@@ -37,12 +39,29 @@ namespace webapi.event_.codeFirst.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Administrador, Aluno")]
+        [Authorize(Roles = "Administrador,Aluno")]
         public IActionResult Get()
         {
             try
             {
-                return Ok(_tiposEventoRepository.Listar());
+                return Ok(_comentarioEventoRepository.Listar());
+            }
+            catch (Exception erro)
+            {
+
+                return BadRequest(erro.Message);
+            }
+        }
+
+        [HttpDelete]
+        [Authorize(Roles = "Administrador")]
+        public IActionResult Delete(Guid id)
+        {
+            try
+            {
+                _comentarioEventoRepository.Deletar(id);
+
+                return Ok();
             }
             catch (Exception erro)
             {
@@ -53,11 +72,11 @@ namespace webapi.event_.codeFirst.Controllers
 
         [HttpGet("{id}")]
         [Authorize(Roles = "Administrador")]
-        public IActionResult GetById(Guid id)
+        public IActionResult GetById(Guid id) 
         {
             try
             {
-                return Ok(_tiposEventoRepository.BuscarPorId(id));
+               return Ok(_comentarioEventoRepository.BuscarPorId(id));
             }
             catch (Exception erro)
             {
@@ -65,43 +84,5 @@ namespace webapi.event_.codeFirst.Controllers
                 return BadRequest(erro.Message);
             }
         }
-
-        [HttpDelete("{id}")]
-        [Authorize(Roles = "Administrador")]
-        public IActionResult Delete(Guid id)
-        {
-            try
-            {
-                _tiposEventoRepository.Deletar(id);
-
-                return Ok();
-            }
-            catch (Exception erro)
-            {
-
-                return BadRequest(erro.Message);
-            }
-
-        }
-
-        [HttpPut("{id}")]
-        [Authorize(Roles = "Administrador")]
-        public IActionResult Put(Guid id, TiposEvento tipoEvento)
-        {
-            try
-            {
-                _tiposEventoRepository.Atualizar(id, tipoEvento);
-
-                return Ok();
-            }
-            catch (Exception erro)
-            {
-
-                return BadRequest(erro.Message);
-            }
-        }
-
-
-
     }
 }

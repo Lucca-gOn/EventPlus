@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace webapi.event_.codeFirst.Migrations
 {
     /// <inheritdoc />
-    public partial class BD_v1 : Migration
+    public partial class BDv1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

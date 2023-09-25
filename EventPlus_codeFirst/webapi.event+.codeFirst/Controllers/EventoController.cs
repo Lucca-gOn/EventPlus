@@ -10,22 +10,22 @@ namespace webapi.event_.codeFirst.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Produces("application/json")]
-    public class TiposEventoController : ControllerBase
+    public class EventoController : ControllerBase
     {
-        private ITiposEventoRepository _tiposEventoRepository;
+        private readonly IEventoRepository _eventoRepository;
 
-        public TiposEventoController()
+        public EventoController()
         {
-            _tiposEventoRepository = new TiposEventoRepository();
+            _eventoRepository = new EventoRepository();
         }
 
         [HttpPost]
         [Authorize(Roles = "Administrador")]
-        public IActionResult Post(TiposEvento tipoEvento)
+        public IActionResult Post(Evento evento)
         {
             try
             {
-                _tiposEventoRepository.Cadastrar(tipoEvento);
+                _eventoRepository.Cadastrar(evento);
 
                 return StatusCode(201);
             }
@@ -37,27 +37,13 @@ namespace webapi.event_.codeFirst.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Administrador, Aluno")]
+        [Authorize(Roles = "Administrador,Aluno")]
         public IActionResult Get()
         {
             try
             {
-                return Ok(_tiposEventoRepository.Listar());
-            }
-            catch (Exception erro)
-            {
+                return Ok(_eventoRepository.Listar());
 
-                return BadRequest(erro.Message);
-            }
-        }
-
-        [HttpGet("{id}")]
-        [Authorize(Roles = "Administrador")]
-        public IActionResult GetById(Guid id)
-        {
-            try
-            {
-                return Ok(_tiposEventoRepository.BuscarPorId(id));
             }
             catch (Exception erro)
             {
@@ -72,7 +58,7 @@ namespace webapi.event_.codeFirst.Controllers
         {
             try
             {
-                _tiposEventoRepository.Deletar(id);
+                _eventoRepository.Deletar(id);
 
                 return Ok();
             }
@@ -81,16 +67,30 @@ namespace webapi.event_.codeFirst.Controllers
 
                 return BadRequest(erro.Message);
             }
+        }
 
+        [HttpGet("{id}")]
+        [Authorize(Roles = "Administrador")]
+        public IActionResult GetById(Guid id)
+        {
+            try
+            {
+                return Ok(_eventoRepository.BuscarPorId(id));
+            }
+            catch (Exception erro)
+            {
+
+                return BadRequest(erro.Message);
+            }
         }
 
         [HttpPut("{id}")]
         [Authorize(Roles = "Administrador")]
-        public IActionResult Put(Guid id, TiposEvento tipoEvento)
+        public IActionResult Put(Guid id, Evento evento)
         {
             try
             {
-                _tiposEventoRepository.Atualizar(id, tipoEvento);
+                _eventoRepository.Atualizar(id, evento);
 
                 return Ok();
             }
@@ -100,8 +100,5 @@ namespace webapi.event_.codeFirst.Controllers
                 return BadRequest(erro.Message);
             }
         }
-
-
-
     }
 }

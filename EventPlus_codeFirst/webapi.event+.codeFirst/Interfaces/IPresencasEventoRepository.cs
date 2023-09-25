@@ -15,9 +15,6 @@ namespace webapi.event_.codeFirst.Interfaces
         void Atualizar(Guid id, PresencasEvento presencasEvento);
         
         //uma lista para os meus eventos;
-        List<PresencasEvento> ListarMeusEventos();
-
-        //Um mêtodo para incricao;
-        void Increver(PresencasEvento inscrever);
+        List<PresencasEvento> ListarMeusEventos(Guid id);
     }
 }

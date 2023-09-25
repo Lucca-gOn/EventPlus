@@ -12,8 +12,8 @@ using webapi.event_.codeFirst.Contexts;
 namespace webapi.event_.codeFirst.Migrations
 {
     [DbContext(typeof(EventContext))]
-    [Migration("20230919113643_BD_v1")]
-    partial class BD_v1
+    [Migration("20230925005735_BDv1")]
+    partial class BDv1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

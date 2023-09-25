@@ -19,7 +19,7 @@ namespace webapi.event_.codeFirst.Contexts
         /// <param name="optionsBuilder">Objeto com as configurações definidas</param>
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=NOTE10-S14\\SQLEXPRESS; Database=event+_manha; User Id=sa; Pwd=Senai@134; TrustServerCertificate=True;");
+            optionsBuilder.UseSqlServer("Server=DESKTOP-OO85A2H\\SQLEXPRESS; Database=event+_manha; Integrated Security=True; TrustServerCertificate=True;");
 
             base.OnConfiguring(optionsBuilder);
         }

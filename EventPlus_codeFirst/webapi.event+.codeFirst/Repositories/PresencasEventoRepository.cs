@@ -1,4 +1,5 @@
-﻿using webapi.event_.codeFirst.Contexts;
+﻿using Microsoft.EntityFrameworkCore;
+using webapi.event_.codeFirst.Contexts;
 using webapi.event_.codeFirst.Domains;
 using webapi.event_.codeFirst.Interfaces;
 
@@ -15,12 +16,20 @@ namespace webapi.event_.codeFirst.Repositories
 
         public void Atualizar(Guid id, PresencasEvento presencasEvento)
         {
-            throw new NotImplementedException();
+            PresencasEvento buscarPresenca = _eventContext.PresencasEvento.Find(id)!;
+            if (buscarPresenca != null)
+            {
+                buscarPresenca.Situacao = presencasEvento.Situacao;
+            }
+
+            _eventContext.Update(presencasEvento);
+
+            _eventContext.SaveChanges();
         }
 
         public PresencasEvento BuscarPorId(Guid id)
         {
-            throw new NotImplementedException();
+            return _eventContext.PresencasEvento.FirstOrDefault(e => e.IdPresencaEvento == id)!;     
         }
 
         public void Cadastrar(PresencasEvento presencasEvento)
@@ -32,12 +41,9 @@ namespace webapi.event_.codeFirst.Repositories
 
         public void Deletar(Guid id)
         {
-            throw new NotImplementedException();
-        }
+            _eventContext.PresencasEvento.Where(e => e.IdPresencaEvento == id).ExecuteDelete();
 
-        public void Increver(PresencasEvento inscrever)
-        {
-            throw new NotImplementedException();
+            _eventContext.SaveChanges();
         }
 
         public List<PresencasEvento> Listar()
@@ -45,9 +51,36 @@ namespace webapi.event_.codeFirst.Repositories
             return _eventContext.PresencasEvento.ToList();
         }
 
-        public List<PresencasEvento> ListarMeusEventos()
+        public List<PresencasEvento> ListarMeusEventos(Guid id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                List<PresencasEvento> meusEventosBuscado = _eventContext.PresencasEvento
+                    .Select(e => new PresencasEvento
+                    {
+                        IdPresencaEvento = e.IdPresencaEvento,
+                        Situacao = e.Situacao,
+
+                        Evento = new Evento
+                        {
+                            NomeEvento = e.Evento.NomeEvento,
+                            DataEvento = e.Evento.DataEvento,
+                            Descricao = e.Evento.Descricao,
+
+                            Instituicao = new Instituicao
+                            {
+                                NomeFantasia = e.Evento.Instituicao.NomeFantasia
+                            }
+                        }
+                    }).ToList();
+
+                return meusEventosBuscado;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
     }
 }

@@ -19,11 +19,12 @@ namespace webapi.event_.codeFirst.Repositories
             if (buscarTipoEvento != null)
             {
                 buscarTipoEvento.Titulo = tipoEvento.Titulo;
-
-                _eventContext.Update(buscarTipoEvento);
-
-                _eventContext.SaveChanges();
             }
+
+            _eventContext.Update
+                (buscarTipoEvento);
+
+            _eventContext.SaveChanges();
         }
 
         public TiposEvento BuscarPorId(Guid id)

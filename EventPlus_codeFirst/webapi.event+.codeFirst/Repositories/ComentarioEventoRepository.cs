@@ -1,28 +1,40 @@
-﻿using webapi.event_.codeFirst.Domains;
+﻿using webapi.event_.codeFirst.Contexts;
+using webapi.event_.codeFirst.Domains;
 using webapi.event_.codeFirst.Interfaces;
 
 namespace webapi.event_.codeFirst.Repositories
 {
     public class ComentarioEventoRepository : IComentarioEventoRepository
     {
+        private readonly EventContext _eventContext;
+
+        public ComentarioEventoRepository()
+        {
+            _eventContext = new EventContext();
+        }
+
         public ComentariosEvento BuscarPorId(Guid id)
         {
-            throw new NotImplementedException();
+           return _eventContext.ComentariosEvento.FirstOrDefault(e => e.IdComentarioEvento == id)!;
         }
 
         public void Cadastrar(ComentariosEvento novoComentario)
         {
-            throw new NotImplementedException();
+            _eventContext.Add(novoComentario);
+
+            _eventContext.SaveChanges();
         }
 
         public void Deletar(Guid id)
         {
-            throw new NotImplementedException();
+            _eventContext.ComentariosEvento.Where(e => e.IdComentarioEvento == id);
+
+            _eventContext.SaveChanges();
         }
 
         public List<ComentariosEvento> Listar()
         {
-            throw new NotImplementedException();
+            return _eventContext.ComentariosEvento.ToList();
         }
     }
 }
